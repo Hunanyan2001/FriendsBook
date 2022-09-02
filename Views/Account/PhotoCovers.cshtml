@@ -1,0 +1,19 @@
+﻿@using IProject.Models;
+@model Tuple<List<FileModel>,List<PhotoCovers>>
+@{
+    ViewData["Title"] = "PhotoCovers";
+    Layout = "_Layout";
+}
+<body>
+    @Html.Partial("~/Views/Account/PageUser.cshtml")
+
+</body>
+<footer class="border-top footer text-muted">
+    <div>
+        <h3 style="background-color:black;color:white">All Photo Covers</h3>
+        @foreach (var f in Model.Item2)
+        {
+            <img src="@Url.Content(f.Path)" height="100" width="100">
+        }
+    </div>
+</footer>
