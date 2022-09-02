@@ -4,36 +4,22 @@
 @{
     ViewData["Title"] = "PageUser";
 }
-<style>
 
-div#wrapper {
-  position: relative;
-}
 
-img {
-  position: absolute;
-}
-
-</style>
 
 <body style="background-color:black">
-    <div class="wrapper">
     <form asp-action="PhotoCovers" asp-controller="Account" method="post" enctype="multipart/form-data">
         @if (Model.Item2.Count() != 0)
         {
-            <p><img style="" src="@Url.Content(Model.Item2.Last().Path)" alt="Snow" height="600" width="1296"></p>
-            <input class="con" style="color:white;border-radius:10px;  position: absolute; top: 20px; left: 100px;" type="file" name="uploadedFile" /><br>
-            <input class="con" style="background-color:blue; color:white;border-radius:10px; position: absolute; top: 20px; left: 100px;" type="submit" value="upload Avatar"/>
+            <p><img style="" src="@Url.Content(Model.Item2.Last().Path)" height="600" width="1296"></p>
         }
         else
         {
-            <p><img src="" height="600" width="1296"alt="Snow"></p>
-            <input class="con" style="color:white;border-radius:10px" type="file" name="uploadedFile" /><br>
-            <input class="con" style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar"/>
+            <p><img src="" height="600" width="1296"></p>
         }
-       
+        <input style="color:white;border-radius:10px" type="file" name="uploadedFile" /><br>
+        <input style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar"/>
     </form>
-    </div>
     <h3>Choose photo to upload</h3>
     <form asp-action="PageUser" asp-controller="Account" method="post" enctype="multipart/form-data">
         @if (Model.Item1.Count() != 0)
