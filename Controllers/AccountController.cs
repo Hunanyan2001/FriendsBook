@@ -52,9 +52,17 @@ namespace IProject.Controllers
 
             var itemFiles = _context.Files.Where(f => f.UserId == currentUserId).ToList();
             var itemPhotoCovers = _context.PhotoCovers.Where(f => f.UserId == currentUserId).ToList();
-            return View(Tuple.Create(itemFiles,itemPhotoCovers));
+            return View(Tuple.Create(itemFiles, itemPhotoCovers));
         }
-
+        //public IActionResult ShowAllUsers()
+        //{
+        //    var currentUserId = _userManager.GetUserId(User);
+        //    var friends = _context.Users.ToList();
+        //    var itemFiles = _context.Files.Where(f => f.UserId == currentUserId).ToList();
+        //    var itemPhotoCovers = _context.PhotoCovers.Where(f => f.UserId == currentUserId).ToList();
+        //    return View(Tuple.Create(itemFiles,itemPhotoCovers,friends));
+        //}
+       
         [HttpGet]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModels model)

@@ -6,11 +6,14 @@ namespace IProject.Models
 {
     public class User:IdentityUser
     {
-        [Key]
         public int Year { get; set; }
+
         public ICollection<FileModel>? FileModels { get; set; }
 
         public ICollection<PhotoCovers>? PhotoCovers { get; set; }
+
+        public ICollection<UserFriendShip>? FriendsOf { get; set; }
+        public ICollection<UserFriendShip>? Friends { get; set; }
 
     }
 }

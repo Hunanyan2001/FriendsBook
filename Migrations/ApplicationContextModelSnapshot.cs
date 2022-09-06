@@ -140,6 +140,21 @@ namespace IProject.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("IProject.Models.UserFriendShip", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserFriendId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "UserFriendId");
+
+                    b.HasIndex("UserFriendId");
+
+                    b.ToTable("Friends");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -291,6 +306,25 @@ namespace IProject.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("IProject.Models.UserFriendShip", b =>
+                {
+                    b.HasOne("IProject.Models.User", "UserFriend")
+                        .WithMany("FriendsOf")
+                        .HasForeignKey("UserFriendId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IProject.Models.User", "User")
+                        .WithMany("Friends")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("UserFriend");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -345,6 +379,10 @@ namespace IProject.Migrations
             modelBuilder.Entity("IProject.Models.User", b =>
                 {
                     b.Navigation("FileModels");
+
+                    b.Navigation("Friends");
+
+                    b.Navigation("FriendsOf");
 
                     b.Navigation("PhotoCovers");
                 });

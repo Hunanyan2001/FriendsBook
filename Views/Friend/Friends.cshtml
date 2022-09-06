@@ -1,0 +1,19 @@
+﻿@using IProject.Models;
+@model Tuple<List<FileModel>,List<UserFriendShip>>
+@{
+    ViewData["Title"] = "PhotoCovers";
+    Layout = "_Layout";
+}
+<body>
+ @* @Html.Partial("~/Views/Account/PageUser.cshtml")*@
+    
+</body>
+<footer class="border-top footer text-muted">
+    <div>
+<h3 style="background-color:black;color:white">All Friends</h3>
+    @foreach (var f in Model.Item2)
+        {
+            <p><label>@f.UserFriendId</label></p>
+        }
+    </div>
+    </footer>

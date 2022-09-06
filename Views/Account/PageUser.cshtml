@@ -5,40 +5,82 @@
     ViewData["Title"] = "PageUser";
 }
 
+<style>
+    .newcontainer {
+        background: black;
+        color: #fff;
+        background-size: cover;
+        background-position: center;
+        max-width: 1296px;
+        margin: auto;
+        position: relative;
+    }
 
+    .newinput {
+        position: absolute;
+        width: 120px;
+        bottom: 100px;
+        left: 90%;
+        transform: translateX(-50%);
+    }
+
+    .avatar {
+        position: absolute;
+        left: 2%;
+        bottom: -70px;
+        transform: translateX(1%);
+    }
+
+    .avatarinput {
+        position: absolute;
+        width: 120px;
+        bottom: 30px;
+        left: 90%;
+        transform: translateX(-50%);
+    }
+
+    .footer {
+        margin-top: 100px;
+    }
+
+</style>
 
 <body style="background-color:black">
-    <form asp-action="PhotoCovers" asp-controller="Account" method="post" enctype="multipart/form-data">
-        @if (Model.Item2.Count() != 0)
-        {
-            <p><img style="" src="@Url.Content(Model.Item2.Last().Path)" height="600" width="1296"></p>
-        }
-        else
-        {
-            <p><img src="" height="600" width="1296"></p>
-        }
-        <input style="color:white;border-radius:10px" type="file" name="uploadedFile" /><br>
-        <input style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar"/>
-    </form>
-    <h3>Choose photo to upload</h3>
-    <form asp-action="PageUser" asp-controller="Account" method="post" enctype="multipart/form-data">
-        @if (Model.Item1.Count() != 0)
-        {
-            <p><img style="border-radius:50%" src="@Url.Content(Model.Item1.Last().Path)" height="200" width="200"></p>
-        }
-        else
-        {
-            <p><img src="" height="200" width="200"></p>
-        }
-        <input style="color:white;border-radius:10px" type="file" name="uploadedFile" /><br>
-        <input style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar" />
-    </form>
+    
+    <div class="newcontainer">
+        <form asp-action="PhotoCovers" asp-controller="Account" method="post" enctype="multipart/form-data">
+            @if (Model.Item2.Count() != 0)
+            {
+                <p><img style="border-radius:3%" src="@Url.Content(Model.Item2.Last().Path)" height="600" width="1296"></p>
+            }
+            else
+            {
+                <p><img style="border-radius:3%" src="" height="600" width="1296"></p>
+            }
+            <input class="newinput" style="color:white;border-radius:10px; bottom:70px" type="file" name="uploadedFile" /><br>
+            <input class="newinput" for" style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar" />
+        </form>
+    </div>
+    <div class="newcontainer">
+        <form asp-action="PageUser" asp-controller="Account" method="post" enctype="multipart/form-data">
+            @if (Model.Item1.Count() != 0)
+            {
+                <p><img class="avatar" style="border-radius:50%" src="@Url.Content(Model.Item1.Last().Path)" height="200" width="200"></p>
+            }
+            else
+            {
+                <p><img style="border-radius:50%" src="" height="200" width="200"></p>
+            }
+            <input class="avatarinput" style="color:white;border-radius:10px;bottom:1px" type="file" name="uploadedFile" /><br>
+            <input class="avatarinput" style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar" />
+        </form>
+    </div>
 </body>
 <footer style="background-color:black" class="border-top footer text-muted">
     <div class="nav-scroller bg-white box-shadow">
         <nav style="background-color:black" class="nav nav-underline">
             <a class="nav-link active" href="#">Publication</a>
-            <a class="nav-link" href="#">
+            <a class="nav-link" asp-action="Friends" asp-controller="Friend">
                 Friends
                 <span class="badge badge-pill bg-light align-text-bottom">27</span>
             </a>
