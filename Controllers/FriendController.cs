@@ -18,19 +18,25 @@ namespace IProject.Controllers
         public IActionResult Friends()
         {
             var currentUserId = _userManager.GetUserId(User);
-            var friends = _context.Friends.ToList();
-            var itemFiles = _context.Files.Where(f => f.UserId == currentUserId).ToList();
-            return View(Tuple.Create(itemFiles, friends));
+            var friends = _context.Friends.Where(f => f.UserId == currentUserId).ToList();
+            var itemFiles = _context.Files.ToList();
+            var users = _context.Users.ToList();
+            return View(Tuple.Create(itemFiles, friends,users));
         }
-        //public IActionResult ShowPage(string id)
-        //{
-        //    return View();
-        //}
-        
+        public IActionResult ShowUserPage(string id)
+        {
+            //var currentUserId = _userManager.GetUserId(User);
+            var users = _context.Users.Where(f=>f.Id==id).ToList();
+            var itemFiles = _context.Files.Where(f=>f.UserId==id).ToList();
+            var itemPhotoCovers = _context.PhotoCovers.Where(f => f.UserId == id).ToList();
+            return View(Tuple.Create(itemFiles, itemPhotoCovers, users));
+        }
+
         public async Task<IActionResult> AddFriend(string id)
         {
+            var user = await _userManager.GetUserAsync(this.User);
             bool isFriend = false;
-            foreach ( var f in _context.Friends)
+            foreach (var f in _context.Friends.Where(p=>p.UserId==user.Id))
             {
                 if (id == f.UserFriendId)
                 {
@@ -40,7 +46,6 @@ namespace IProject.Controllers
             if (isFriend==false)
             {
                 var users = _context.Users.ToList();
-                var user = await _userManager.GetUserAsync(this.User);
                 var u = await _context.Users.Include(u => u.Friends).FirstOrDefaultAsync(u => u.Id == user.Id);
                 UserFriendShip ship = new UserFriendShip { UserId = user.Id, UserFriendId = id };
                 _context.Friends.Add(ship);
@@ -52,7 +57,7 @@ namespace IProject.Controllers
         {
             var currentUserId = _userManager.GetUserId(User);
             var users = _context.Users.ToList();
-            var itemFiles = _context.Files.Where(f => f.UserId == currentUserId).ToList();
+            var itemFiles = _context.Files.ToList();
             var itemPhotoCovers = _context.PhotoCovers.Where(f => f.UserId == currentUserId).ToList();
             return View(Tuple.Create(itemFiles, itemPhotoCovers, users));
         }

@@ -2,11 +2,11 @@
 @*@model Tuple<List<FileModel>,List<PhotoCovers>>;*@
 @model Tuple<List<FileModel>,List<PhotoCovers>,List<User>>;
 @{
-    ViewData["Title"] = "AllPhoto";
+    ViewData["Title"] = "AllUsers";
     Layout = "_Layout";
 }
 <body>
-    @*@Html.Partial("~/Views/Account/PageUser.cshtml")*@
+    @Html.Partial("~/Views/Account/PageUser.cshtml")
 
 </body>
 <footer class="border-top footer text-muted">
@@ -15,14 +15,24 @@
         @foreach (var f in Model.Item3)
         {
             <p>
-                @if(f.Id == Model.Item1.Last().UserId)
+                @foreach (var item in Model.Item1)
                 {
-                   <img style="border-radius:50%" src="@Url.Content(Model.Item1.Last().Path)" height="100" width="100">
+
+                    @if (Model.Item1.Count != 0)
+                    {
+                        @if (f.Id == item.UserId)
+                        {
+                            <a asp-controller="Friend" asp-action="ShowUserPage">
+                                <img style="border-radius:50%" src="@Url.Content(Model.Item1.Where(p=>p.UserId==f.Id).Last().Path)" height="100" width="100">
+                                </a>
+                            break;
+                        }
+                    }
                 }
-                <label >@f.Email</label>
-                <label>@f.Year</label>
-                <a style="color:blue" asp-action="AddFriend" asp-route-id="@f.Id" asp-controller="Friend">AddFriend</a>
-            </p>
-        }
-    </div>
-</footer>
+                    <a asp-action="ShowUserPage" asp-controller="Friend" asp-route-id="@f.Id">@f.Email</a>
+                    <label>@f.Year</label>
+                    <a style="color:blue" asp-action="AddFriend" asp-route-id="@f.Id" asp-controller="Friend">AddFriend</a>
+                </p>
+            }
+        </div>
+    </footer>

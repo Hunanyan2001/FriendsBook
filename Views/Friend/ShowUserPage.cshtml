@@ -1,0 +1,9 @@
+﻿@using IProject.Models;
+@model Tuple<List<FileModel>,List<PhotoCovers>,List<User>>;
+@{
+    ViewData["Title"] = "AllUsers";
+    Layout = "_Layout";
+}
+<body>
+    @Html.Partial("~/Views/Account/PageUser.cshtml")
+</body>

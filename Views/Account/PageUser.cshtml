@@ -1,6 +1,7 @@
 ﻿@using IProject.Models;
-@*@model IEnumerable<IProject.Models.FileModel>;*@
-@model Tuple<List<FileModel>,List<PhotoCovers>>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> _userManager
+@model Tuple<List<FileModel>,List<PhotoCovers>,List<User>>
 @{
     ViewData["Title"] = "PageUser";
 }
@@ -57,8 +58,16 @@
             {
                 <p><img style="border-radius:3%" src="" height="600" width="1296"></p>
             }
+            
+            @if (Model.Item2.Last().UserId==_userManager.GetUserId(User)) 
+            { 
             <input class="newinput" style="color:white;border-radius:10px; bottom:70px" type="file" name="uploadedFile" /><br>
-            <input class="newinput" for" style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar" />
+                <input class="newinput" for" style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar" />
+            }
+            else
+            {
+                <a asp-controller="Friend" asp-action="AddFriend" asp-route-id="@Model.Item2.Last().UserId" class="avatarinput" style="background-color:blue;color:white;border-radius:10px" type="button">AddFriend</a>
+            }
         </form>
     </div>
     <div class="newcontainer">
@@ -71,8 +80,11 @@
             {
                 <p><img style="border-radius:50%" src="" height="200" width="200"></p>
             }
-            <input class="avatarinput" style="color:white;border-radius:10px;bottom:1px" type="file" name="uploadedFile" /><br>
-            <input class="avatarinput" style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar" />
+            @if (Model.Item2.Last().UserId == _userManager.GetUserId(User)) 
+            {
+                <input class="avatarinput" style="color:white;border-radius:10px;bottom:1px" type="file" name="uploadedFile" /><br>
+                <input class="avatarinput" style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar" />
+            }
         </form>
     </div>
 </body>
