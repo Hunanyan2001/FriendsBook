@@ -61,5 +61,6 @@ namespace IProject.Controllers
             var itemPhotoCovers = _context.PhotoCovers.Where(f => f.UserId == currentUserId).ToList();
             return View(Tuple.Create(itemFiles, itemPhotoCovers, users));
         }
+        //
     }
 }
