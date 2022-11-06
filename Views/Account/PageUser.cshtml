@@ -1,68 +1,124 @@
 ﻿@using IProject.Models;
-@*@model IEnumerable<IProject.Models.FileModel>;*@
-@model Tuple<List<FileModel>,List<PhotoCovers>>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> _userManager
+@*@model Tuple<List<FileModel>,List<PhotoCovers>,List<User>>*@
+@model IProject.ViewModels.AllUsersViewModel
 @{
     ViewData["Title"] = "PageUser";
 }
-<style>
+<link rel="stylesheet" href="~/css/PageUser.css" asp-append-version="true" />
 
-div#wrapper {
-  position: relative;
+@section Styles {
+    <script type="text/javascript">alert('Welcome your account');</script>
 }
 
-img {
-  position: absolute;
-}
 
-</style>
-
-<body style="background-color:black">
-    <div class="wrapper">
-    <form asp-action="PhotoCovers" asp-controller="Account" method="post" enctype="multipart/form-data">
-        @if (Model.Item2.Count() != 0)
-        {
-            <p><img style="" src="@Url.Content(Model.Item2.Last().Path)" alt="Snow" height="600" width="1296"></p>
-            <input class="con" style="color:white;border-radius:10px;  position: absolute; top: 20px; left: 100px;" type="file" name="uploadedFile" /><br>
-            <input class="con" style="background-color:blue; color:white;border-radius:10px; position: absolute; top: 20px; left: 100px;" type="submit" value="upload Avatar"/>
-        }
-        else
-        {
-            <p><img src="" height="600" width="1296"alt="Snow"></p>
-            <input class="con" style="color:white;border-radius:10px" type="file" name="uploadedFile" /><br>
-            <input class="con" style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar"/>
-        }
-       
-    </form>
+    <body>
+        <div class="newcontainer">
+            <form asp-action="PhotoCovers" asp-controller="Account" method="post" enctype="multipart/form-data">
+                @if (Model.CoversPhoto.Count() != 0)
+            {
+                if (Model.Users.Count() == 1)
+                {
+                    <p><img style="border-radius:3%" src="@Url.Content(Model.CoversPhoto.Last().Path)" height="600" width="1296"></p>
+                }
+                else if (Model.CoversPhoto.Where(p => p.UserId == _userManager.GetUserId(User)).Count() != 0)
+                {
+                    <p><img style="border-radius:3%" src="@Url.Content(Model.CoversPhoto.Where(p=>p.UserId==_userManager.GetUserId(User)).Last().Path)" height="600" width="1296"></p>
+                }
+                else
+                {
+                    <p><img style="border-radius:3%" src="" height="600" width="1296"></p>
+                }
+            }
+            else
+            {
+                <p><img style="border-radius:3%" src="" height="600" width="1296"></p>
+            }
+            
+            @if (Model.Users.Count() == 1 && Model.Users.Last().Id == _userManager.GetUserId(User) || Model.Users.Count !=1)
+            {
+            <input class="newinput" style="color:white;border-radius:10px; bottom:70px" type="file" name="uploadedFile" />
+            <br>
+                <input class="newinput" style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar" />
+            }
+            else
+            {
+            bool isFriend = false;
+            @foreach (var friend in @Model.Friends.Where(f => f.UserId == _userManager.GetUserId(User)))
+            {
+                if (Model.Users.Last().Id == friend.UserFriendId)
+                {
+                    <a asp-controller="Friend" asp-action="RemoveFriend" asp-route-id="@Model.Users.Last().Id" class="avatarinput" style="background-color:black;border-radius:10px;border-color:green;text-align:center;color:red" type="button">Delete</a>
+                    isFriend = true;
+                    break;
+                }
+            }
+            if(isFriend == false)
+            {
+            <a asp-controller="Friend" asp-action="AddFriend" asp-route-id="@Model.Users.Last().Id" class="avatarinput" style="background-color:black;border-radius:10px;text-align:center;border-color:green;color:blue" type="button">AddFriend</a>
+            }
+            }
+        </form>
     </div>
-    <h3>Choose photo to upload</h3>
-    <form asp-action="PageUser" asp-controller="Account" method="post" enctype="multipart/form-data">
-        @if (Model.Item1.Count() != 0)
-        {
-            <p><img style="border-radius:50%" src="@Url.Content(Model.Item1.Last().Path)" height="200" width="200"></p>
-        }
-        else
-        {
-            <p><img src="" height="200" width="200"></p>
-        }
-        <input style="color:white;border-radius:10px" type="file" name="uploadedFile" /><br>
-        <input style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar" />
-    </form>
+
+    <div class="newcontainer">
+        <form asp-action="PageUser" asp-controller="Account" method="post" enctype="multipart/form-data">
+            @if (Model.Photo.Count() != 0)
+            {
+                if (Model.Users.Count() == 1)
+                {
+                    <p><img class="avatar" style="border-radius:50%" src="@Url.Content(Model.Photo.Last().Path)" height="200" width="200"></p>
+                }
+                else if (Model.Photo.Where(p => p.UserId == _userManager.GetUserId(User)).Count() != 0)
+                {
+                    <p><img class="avatar" style="border-radius:50%" src="@Url.Content(Model.Photo.Where(p=>p.UserId == _userManager.GetUserId(User)).Last().Path)" height="200" width="200"></p>
+                }
+                else
+                {
+                    <p><img style="border-radius:50%" src="" height="200" width="200"></p>
+                }
+            }
+            else
+            {
+                <p><img style="border-radius:50%" src="" height="200" width="200"></p>
+            }
+            @if (@Model.Users.Count() == 1 && Model.Users.Last().Id == _userManager.GetUserId(User) || @Model.Users.Count != 1)
+            {
+                <input class="avatarinput" style="color:white;border-radius:10px;bottom:1px" type="file" name="uploadedFile" />
+                <br>
+                <input class="avatarinput" style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar" />
+            }
+        </form>
+    </div>
 </body>
-<footer style="background-color:black" class="border-top footer text-muted">
+<footer class="border-top footer text-muted">
     <div class="nav-scroller bg-white box-shadow">
         <nav style="background-color:black" class="nav nav-underline">
             <a class="nav-link active" href="#">Publication</a>
-            <a class="nav-link" href="#">
-                Friends
-                <span class="badge badge-pill bg-light align-text-bottom">27</span>
-            </a>
-            <a class="nav-link" style="color:blue" href="#">Information</a>
-            <a class="nav-link" style="color:blue" asp-action="ShowAllPhoto" asp-controller="Account">Photo</a>
-            <a class="nav-link" style="color:blue" href="#">Video</a>
-            <a class="nav-link" style="color:blue" asp-action="PhotoCovers" asp-controller="Account">PhotoCovers</a>
-            <a class="nav-link" style="color:blue" href="#">Link</a>
-            <a class="nav-link" style="color:blue" href="#">Link</a>
-            <a class="nav-link" style="color:blue" href="#">Link</a>
+            @if (Model.Users.Count() == 1)
+            {
+                <a class="nav-link" asp-action="Friends" asp-controller="Friend" asp-route-id="@Model.Users.Last().Id">
+                    Friends
+                    <span style="color:blue" class="badge badge-pill bg-light align-text-bottom">@Model.Friends.Where(p=>p.UserId == @Model.Users.Last().Id).Count()</span>
+                </a>
+                <a class="nav-link" asp-action="ShowAllPhoto" asp-controller="Account" asp-route-id="@Model.Users.Last().Id">Photo</a>
+                <a class="nav-link" asp-action="PhotoCovers" asp-controller="Account" asp-route-id="@Model.Users.Last().Id">PhotoCovers</a>
+            }
+            else
+            {
+                <a class="nav-link" asp-action="Friends" asp-controller="Friend" asp-route-id="@Model.Users.Where(p=>p.Id == _userManager.GetUserId(User)).Last().Id">
+                    Friends
+                    <span style="color:blue" class="badge badge-pill bg-light align-text-bottom">@Model.Friends.Where(p=>p.UserId == _userManager.GetUserId(User)).Count()</span>
+                </a>
+                <a class="nav-link" asp-action="ShowAllPhoto" asp-controller="Account" asp-route-id="@Model.Users.Where(p=>p.Id == _userManager.GetUserId(User)).Last().Id">Photo</a>
+                <a class="nav-link" asp-action="PhotoCovers" asp-controller="Account" asp-route-id="@Model.Users.Where(p=>p.Id == _userManager.GetUserId(User)).Last().Id">PhotoCovers</a>
+            }
+            <a class="nav-link" href="#">Information</a>
+            <a class="nav-link" href="#">Video</a>
+            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="#">Link</a>
         </nav>
     </div>
 </footer>

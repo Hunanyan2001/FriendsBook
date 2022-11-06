@@ -1,0 +1,35 @@
+﻿@using IProject.Models;
+@*@model Tuple<List<FileModel>,List<PhotoCovers>,List<User>>;*@
+@model IProject.ViewModels.AllUsersViewModel
+@{
+    ViewData["Title"] = "AllUsers";
+    Layout = "_Layout";
+}
+<body>
+    @Html.Partial("~/Views/Account/PageUser.cshtml")
+
+</body>
+<footer class="border-top footer text-muted">
+    <h3 style="background-color:black;color:white">New Accounts</h3>
+        @foreach (var user in Model.Users)
+        {
+            <p>
+                @foreach (var item in Model.Photo)
+                {
+
+                    @if (Model.Photo.Count != 0)
+                    {
+                        @if (user.Id == item.UserId)
+                        {
+                            <a asp-controller="Friend" asp-action="ShowUserPage" asp-route-id="@user.Id">
+                                <img style="border-radius:50%" src="@Url.Content(Model.Photo.Where(p=>p.UserId==user.Id).Last().Path)" height="100" width="100">
+                            </a>
+                            break;
+                        }
+                    }
+                }
+                <a asp-action="ShowUserPage" asp-controller="Friend" asp-route-id="@user.Id">@user.Email</a>
+                <label>@user.Year</label>
+            </p>
+        }
+</footer>

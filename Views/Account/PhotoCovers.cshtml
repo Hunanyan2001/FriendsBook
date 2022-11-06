@@ -1,5 +1,6 @@
 ﻿@using IProject.Models;
-@model Tuple<List<FileModel>,List<PhotoCovers>>
+@*@model Tuple<List<FileModel>,List<PhotoCovers>,List<User>>*@
+@model IProject.ViewModels.AllUsersViewModel
 @{
     ViewData["Title"] = "PhotoCovers";
     Layout = "_Layout";
@@ -11,7 +12,7 @@
 <footer class="border-top footer text-muted">
     <div>
         <h3 style="background-color:black;color:white">All Photo Covers</h3>
-        @foreach (var f in Model.Item2)
+        @foreach (var f in Model.CoversPhoto)
         {
             <img src="@Url.Content(f.Path)" height="100" width="100">
         }

@@ -1,7 +1,7 @@
 ﻿@model IProject.ViewModels.LoginViewModel
- 
 
 <h2>Login</h2>
+
 <body class="text-center">
     <form class="form-signin" method="post" asp-controller="Account" asp-action="Login"
         asp-route-returnUrl="@Model.ReturnUrl">
@@ -19,8 +19,6 @@
         </label>
       </div>
     </form>
-  
-
 </body>
 @*<form method="post" asp-controller="Account" asp-action="Login"
       asp-route-returnUrl="@Model.ReturnUrl">
