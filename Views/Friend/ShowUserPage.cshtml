@@ -1,7 +1,8 @@
 ﻿@using IProject.Models;
-@model Tuple<List<FileModel>,List<PhotoCovers>,List<User>>;
+@*@model Tuple<List<FileModel>,List<PhotoCovers>,List<User>>;*@
+@model IProject.ViewModels.AllUsersViewModel
 @{
-    ViewData["Title"] = "AllUsers";
+    ViewData["Title"] = "UserPage";
     Layout = "_Layout";
 }
 <body>

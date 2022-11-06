@@ -25,42 +25,55 @@ namespace IProject.Controllers
             _appEnvironment = appEnvironment;
             _context = context;
         }
+
         public IActionResult PageUser()
         {
             if (User.Identity.IsAuthenticated)
             {
                 var currentUserId = _userManager.GetUserId(User);
-                var users = _context.Users.ToList();
-                var itemFiles = _context.Files.Where(f => f.UserId == currentUserId).ToList();
-                var itemPhotoCover = _context.PhotoCovers.Where(f => f.UserId == currentUserId).ToList();
-                return View(Tuple.Create(itemFiles, itemPhotoCover,users));
+                AllUsersViewModel userPage = new AllUsersViewModel()
+                {
+                    Users = _context.Users.Where(f => f.Id == currentUserId).ToList(),
+                    Photo = _context.Files.Where(f => f.UserId == currentUserId).ToList(),
+                    CoversPhoto = _context.PhotoCovers.Where(f => f.UserId == currentUserId).ToList(),
+                    Friends = _context.Friends.ToList()
+                };
+                return View(userPage);
             }
             else
             {
                 return View("Register");
             }
         }
-        public IActionResult PhotoCovers()
+        public IActionResult PhotoCovers(string id)
         {
-            var users = _context.Users.ToList();
             var currentUserId = _userManager.GetUserId(User);
-            var itemFiles = _context.Files.Where(f => f.UserId == currentUserId).ToList();
-            var itemPhotoCover = _context.PhotoCovers.Where(f => f.UserId == currentUserId).ToList();
-            return View(Tuple.Create(itemFiles, itemPhotoCover,users));
+            AllUsersViewModel photoCovers = new AllUsersViewModel()
+            {
+                Users = _context.Users.Where(f=>f.Id == id).ToList(),
+                Photo = _context.Files.Where(f => f.UserId == id).ToList(),
+                CoversPhoto = _context.PhotoCovers.Where(f => f.UserId == id).ToList(),
+                Friends = _context.Friends.ToList()
+            };
+            return View(photoCovers);
         }
-        public IActionResult ShowAllPhoto()
+        public IActionResult ShowAllPhoto(string id)
         {
-            var users = _context.Users.ToList();
-            var currentUserId = _userManager.GetUserId(User);
-
-            var itemFiles = _context.Files.Where(f => f.UserId == currentUserId).ToList();
-            var itemPhotoCovers = _context.PhotoCovers.Where(f => f.UserId == currentUserId).ToList();
-            return View(Tuple.Create(itemFiles, itemPhotoCovers,users));
+            var photoGhost = _context.Files.Where(f => f.UserId == id).ToList();
+           // var currentUserId = _userManager.GetUserId(User);
+            AllUsersViewModel allPhoto = new AllUsersViewModel()
+            {
+                Users = _context.Users.Where(f=>f.Id == id).ToList(),
+                Photo = _context.Files.Where(f => f.UserId == id).ToList(),
+                CoversPhoto = _context.PhotoCovers.Where(f => f.UserId == id).ToList(),
+                Friends = _context.Friends.ToList()
+            };
+            return View(allPhoto);
         }
-
 
         [HttpGet]
         [HttpPost]
+
         public async Task<IActionResult> Register(RegisterViewModels model)
         {
             if (ModelState.IsValid)
@@ -111,8 +124,10 @@ namespace IProject.Controllers
             }
             return RedirectToAction("PageUser");
         }
+
         [HttpPost]
         [Authorize]
+
         public async Task<IActionResult> PhotoCovers(IFormFile uploadedFile)
         {
             if (uploadedFile != null)
@@ -132,15 +147,14 @@ namespace IProject.Controllers
             return RedirectToAction("PageUser");
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result =
-                await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
                     // проверяем, принадлежит ли URL приложению
@@ -163,6 +177,7 @@ namespace IProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Logout()
         {
             // удаляем аутентификационные куки

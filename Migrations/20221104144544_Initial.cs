@@ -180,11 +180,19 @@ namespace IProject.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserFriendId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserFriendId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserFriendEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserEmailId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    FriendAvatar = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Friends", x => new { x.UserId, x.UserFriendId });
+                    table.ForeignKey(
+                        name: "FK_Friends_AspNetUsers_UserEmailId",
+                        column: x => x.UserEmailId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Friends_AspNetUsers_UserFriendId",
                         column: x => x.UserFriendId,
@@ -262,6 +270,11 @@ namespace IProject.Migrations
                 name: "IX_Files_UserId",
                 table: "Files",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Friends_UserEmailId",
+                table: "Friends",
+                column: "UserEmailId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Friends_UserFriendId",

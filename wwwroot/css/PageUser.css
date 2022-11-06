@@ -1,0 +1,48 @@
+﻿body{
+    background-color: black;
+}
+
+footer{
+    background-color:black;
+}
+
+a{
+    color:blue;
+}
+
+.newcontainer {
+    background: black;
+    color: #fff;
+    background-size: cover;
+    background-position: center;
+    max-width: 1296px;
+    margin: auto;
+    position: relative;
+}
+
+.newinput {
+    position: absolute;
+    width: 120px;
+    bottom: 100px;
+    left: 90%;
+    transform: translateX(-50%);
+}
+
+.avatar {
+    position: absolute;
+    left: 2%;
+    bottom: -70px;
+    transform: translateX(1%);
+}
+
+.avatarinput {
+    position: absolute;
+    width: 120px;
+    bottom: 30px;
+    left: 90%;
+    transform: translateX(-50%);
+}
+
+.footer {
+    margin-top: 100px;
+}

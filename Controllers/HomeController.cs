@@ -18,7 +18,6 @@ namespace IProject.Controllers
         {
             return View();
         }
-
        
         public IActionResult Privacy()
         {

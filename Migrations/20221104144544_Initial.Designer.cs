@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IProject.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220905191116_Initial")]
+    [Migration("20221104144544_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -150,7 +150,18 @@ namespace IProject.Migrations
                     b.Property<string>("UserFriendId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("FriendAvatar")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserEmailId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserFriendEmail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("UserId", "UserFriendId");
+
+                    b.HasIndex("UserEmailId");
 
                     b.HasIndex("UserFriendId");
 
@@ -310,6 +321,10 @@ namespace IProject.Migrations
 
             modelBuilder.Entity("IProject.Models.UserFriendShip", b =>
                 {
+                    b.HasOne("IProject.Models.User", "UserEmail")
+                        .WithMany()
+                        .HasForeignKey("UserEmailId");
+
                     b.HasOne("IProject.Models.User", "UserFriend")
                         .WithMany("FriendsOf")
                         .HasForeignKey("UserFriendId")
@@ -323,6 +338,8 @@ namespace IProject.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+
+                    b.Navigation("UserEmail");
 
                     b.Navigation("UserFriend");
                 });
