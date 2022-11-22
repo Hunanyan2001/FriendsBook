@@ -10,5 +10,7 @@ namespace IProject.ViewModels
         public ICollection<PhotoCovers>? CoversPhoto { get; set; }
 
         public ICollection <UserFriendShip>? Friends { get; set; }
+
+        public ICollection <Conversation>? Chats { get; set; }
     }
 }

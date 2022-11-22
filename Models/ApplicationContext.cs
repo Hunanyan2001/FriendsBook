@@ -15,6 +15,8 @@ namespace IProject.Models
 
         public DbSet<UserFriendShip> Friends { get; set; }
 
+        public DbSet<Conversation> Chats { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

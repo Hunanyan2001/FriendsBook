@@ -1,0 +1,19 @@
+﻿body{
+    background:black;
+}
+.center {
+    margin: auto;
+    width: 50%;
+    border: 3px solid white;
+    border-radius:3%;
+    padding: 10px;
+    background-color:grey;
+}
+.text{
+    color:white;
+    background-color:grey;
+}
+.textstyle{
+    color:white;
+    background-color:white;
+}

@@ -12,16 +12,6 @@
         @foreach (var f in Model.Friends)
         {
             <p>
-                @*<label>@f.UserFriendId</label>*@
-                @*@foreach (var item in Model.Photo)
-                {
-                    if (item.UserId==f.UserFriendId)
-                    {
-                        <img style="width:50px;height:50px;border-radius:50%" src="@Url.Content(Model.Photo.Where(p=>p.UserId == f.UserFriendId ).Last().Path)">
-                        break;
-                    }
-                }*@
-                @*<label>@Model.Users.Where(p=>p.Id==f.UserFriendId).Last().Email</label>*@
                  <img style="width:50px;height:50px;border-radius:50%" src="@Url.Content(f.FriendAvatar)">
                 <label style="color:blue">@f.UserFriendEmail</label>
                 <a style="color:red" class="btn btn-outline-success" asp-controller="Friend" asp-action="RemoveFriend" asp-route-id="@f.UserFriendId">Delete</a>

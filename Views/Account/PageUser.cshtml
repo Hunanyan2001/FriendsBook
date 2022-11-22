@@ -35,29 +35,29 @@
             {
                 <p><img style="border-radius:3%" src="" height="600" width="1296"></p>
             }
-            
-            @if (Model.Users.Count() == 1 && Model.Users.Last().Id == _userManager.GetUserId(User) || Model.Users.Count !=1)
+
+            @if (Model.Users.Count() == 1 && Model.Users.Last().Id == _userManager.GetUserId(User) || Model.Users.Count != 1)
             {
-            <input class="newinput" style="color:white;border-radius:10px; bottom:70px" type="file" name="uploadedFile" />
-            <br>
+                <input class="newinput" style="color:white;border-radius:10px; bottom:70px" type="file" name="uploadedFile" />
+                <br>
                 <input class="newinput" style="background-color:blue; color:white;border-radius:10px" type="submit" value="upload Avatar" />
             }
             else
             {
-            bool isFriend = false;
-            @foreach (var friend in @Model.Friends.Where(f => f.UserId == _userManager.GetUserId(User)))
-            {
-                if (Model.Users.Last().Id == friend.UserFriendId)
+                bool isFriend = false;
+                @foreach (var friend in @Model.Friends.Where(f => f.UserId == _userManager.GetUserId(User)))
                 {
-                    <a asp-controller="Friend" asp-action="RemoveFriend" asp-route-id="@Model.Users.Last().Id" class="avatarinput" style="background-color:black;border-radius:10px;border-color:green;text-align:center;color:red" type="button">Delete</a>
-                    isFriend = true;
-                    break;
+                    if (Model.Users.Last().Id == friend.UserFriendId)
+                    {
+                        <a asp-controller="Friend" asp-action="RemoveFriend" asp-route-id="@Model.Users.Last().Id" class="avatarinput" style="background-color:black;border-radius:10px;border-color:green;text-align:center;color:red" type="button">Delete</a>
+                        isFriend = true;
+                        break;
+                    }
                 }
-            }
-            if(isFriend == false)
-            {
-            <a asp-controller="Friend" asp-action="AddFriend" asp-route-id="@Model.Users.Last().Id" class="avatarinput" style="background-color:black;border-radius:10px;text-align:center;border-color:green;color:blue" type="button">AddFriend</a>
-            }
+                if (isFriend == false)
+                {
+                    <a asp-controller="Friend" asp-action="AddFriend" asp-route-id="@Model.Users.Last().Id" class="avatarinput" style="background-color:black;border-radius:10px;text-align:center;border-color:green;color:blue" type="button">AddFriend</a>
+                }
             }
         </form>
     </div>

@@ -1,0 +1,21 @@
+﻿@model  IProject.ViewModels.AllUsersViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>SignalR Chat</title>
+     <script src="~/js/microsoft/signalr/dist/browser/signalr.min.js"></script>
+     <link rel="stylesheet" href="~/css/ChatPage.css" asp-append-version="true" />
+</head>
+<body>
+    @foreach (var f in Model.Friends)
+        {
+            <p>
+                <a asp-controller="Chat" asp-action="Chat" asp-route-id="@f.UserFriendId"> 
+                 <img style="width:50px;height:50px;border-radius:50%" src="@Url.Content(f.FriendAvatar)">
+                <label style="color:blue">@f.UserFriendEmail</label>
+                </a>
+            </p>
+        }
+</body>
+</html>

@@ -1,0 +1,80 @@
+﻿@model IProject.ViewModels.AllUsersViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>SignalR Chat</title>
+    <script src="~/js/microsoft/signalr/dist/browser/signalr.min.js"></script>
+    <link rel="stylesheet" href="~/css/ChatPage.css" asp-append-version="true" />
+</head>
+<body style="background-color:dimgray">
+    <div class="center">
+        @foreach (var f in Model.Friends)
+        {
+            <p>
+                <a asp-controller="Chat" asp-action="Chat" asp-route-id="@f.UserFriendId">
+                    <img style="width:50px;height:50px;border-radius:50%" src="@Url.Content(f.FriendAvatar)">
+                    <label style="color:white">@f.UserFriendEmail</label>
+                </a>
+            </p>
+        }
+
+
+        <div id="header"></div><br />
+        <div id="inputForm">
+            <input class="text" type="text" id="message" />
+            <input class="text" type="button" id="sendBtn" value="Send" />
+        </div>
+        
+        <div id="chatroom"></div>
+        <script src="js/signalr/dist/browser/signalr.min.js"></script>
+        <script class="text-white">
+            const hubConnection = new signalR.HubConnectionBuilder()
+                .withUrl("/chat")
+                .build();
+
+
+            let sender = '@Model.Users.Last().Email';
+            let receiver = '@Model.Friends.Last().UserFriendEmail';
+            @foreach (var messages in @Model.Chats)
+            {
+                    <p>@messages.message</p>
+            }
+            // получение сообщения от сервера
+            hubConnection.on('Send', function(message, sender, receiver) {
+                // создаем элемент <b> для имени пользователя
+                let userNameElem = document.createElement("b");
+                userNameElem.style.color = '#fff';
+                userNameElem.appendChild(document.createTextNode(sender + ': '));
+
+                // создает элемент <p> для сообщения пользователя
+                let elem = document.createElement("p");
+                elem.setAttribute(
+                    'style',
+                    'background-color: blue; color: white; width:50%; height:50%; border-radius: 5%; text-align:center;background-size:contain',
+                );
+                //elem.style.backgroundSize = "50% 50%";
+                //elem.style.backgroundColor = "blue";
+                //elem.style.color = '#fff';
+                elem.appendChild(userNameElem);
+                elem.appendChild(document.createTextNode(message));
+
+                var firstElem = document.getElementById("chatroom").firstChild;
+                document.getElementById("chatroom").insertBefore(elem, firstElem);
+            });
+
+            // установка имени пользователя
+
+            // отправка сообщения на сервер
+            document.getElementById("sendBtn").addEventListener("click", function(e) {
+                let message = document.getElementById("message").value;
+                hubConnection.invoke("Send", message, sender, receiver);
+            });
+
+            hubConnection.start();
+        </script>
+    </div>
+</body>
+</html>
+
+

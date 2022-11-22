@@ -184,5 +184,6 @@ namespace IProject.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+        
     }
 }

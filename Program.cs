@@ -1,5 +1,5 @@
-﻿
-using IProject;
+﻿using IProject;
+using IProject.Controllers;
 using IProject.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +23,8 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddMvc();
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
+
+builder.Services.AddSignalR();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,6 +39,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseSession();
+
+
 
 
 app.UseAuthentication();    // подключение аутентификации
@@ -54,5 +58,16 @@ app.MapControllerRoute(
 app.MapControllers();
 
 app.MapRazorPages();
+app.UseDeveloperExceptionPage();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ChatHub>("/chat");
+});
 
 app.Run();

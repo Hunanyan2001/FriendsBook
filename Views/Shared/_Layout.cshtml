@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MyProject.styles.css" asp-append-version="true" />
+    <link href="~/css/messenger.css" rel="stylesheet" type="text/css" />
+    <script src="~/js/messenger.js"></script>
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
@@ -44,11 +46,17 @@
                     </ul>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <p style="color:blue">@User.Identity.Name</p>
+                         <form method="post" asp-controller="Account" asp-action="Chat">
+                            <a asp-controller="Chat" asp-action="AllChat"><img  class="img" src="/img/png-clipart-speech-balloon-wikimedia-commons-speech-ballon-miscellaneous-blue.png" 
+                           onclick="clickMe()"></a>
+                        </form>
 
+                        <p style="color:blue">@User.Identity.Name</p>
+                        
                         <form method="post" asp-controller="Account" asp-action="Logout">
                             <input style="color:blue" class="btn btn-outline-success" type="submit" value="Logout" />
                         </form>
+                        
                     }
                     else
                     {

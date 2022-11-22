@@ -19,7 +19,11 @@ namespace IProject.Controllers
 
         public IActionResult Friends(string id)
         {
-            var currentUserId = _userManager.GetUserId(User);
+            //var currentUserId = _userManager.GetUserId(User);
+            //if (id == null)
+            //{
+            //    id = currentUserId;
+            //}
             AllUsersViewModel model = new AllUsersViewModel()
             {
                 Photo = _context.Files.Where(f => f.UserId == id).ToList(),
@@ -78,17 +82,15 @@ namespace IProject.Controllers
             var avatar = _context.Files.ToList();
             var users = _context.Users.ToList();
             var u = await _context.Users.Include(u => u.Friends).FirstOrDefaultAsync(u => u.Id == user.Id);
-            UserFriendShip ship = new UserFriendShip
+            var friend = _context.Friends.Find(user.Id,id);
+            if (friend == null)
             {
-                UserId = user.Id,
-                UserFriendId = id,
-                //UserFriendEmail = users.Where(p => p.Id == id).Last().Email,
-                //FriendAvatar = avatar.Where(p => p.UserId == id).Last().Path
-            };
-            _context.Friends.Attach(ship);
-            _context.Friends.Remove(ship);
+                return NotFound();
+            }
+            _context.Friends.Remove(friend);
             _context.SaveChanges();
-            return RedirectToAction("Friends");
+            id = _userManager.GetUserId(User);
+            return RedirectToAction("Friends", new { @id = id });
         }
 
         //[HttpPost]
